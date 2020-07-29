@@ -1,0 +1,26 @@
+{
+    "name": "brianvb/yii2-site-option",
+    "description": "Site option module implements a table to hold site-wide option keys and values",
+    "type": "yii2-extension",
+    "require": {
+        "yiisoft/yii2": "^2.0"
+    },
+    "authors": [
+        {
+            "name": "BrianVB",
+            "email": "vanburen.brian@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "bvb\\siteoption\\": "src"
+        }
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        }
+    ]
+}
