@@ -78,7 +78,8 @@ class SaveOptions extends Action
     }
 
     /**
-     * Displays options for the User module and allows the user to update them
+     * Loads the options from the database or creates new ones where necessary; passes
+     * the models through to the view; saves any data posted in forms while 
      * @return string
      */
     public function run()

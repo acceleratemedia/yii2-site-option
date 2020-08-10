@@ -3,7 +3,7 @@
 namespace bvb\siteoption\common\models;
 
 /**
- * This is the model class for table "site_config".
+ * This is the model class for table "site_option".
  *
  * @property string $key
  * @property string $value
