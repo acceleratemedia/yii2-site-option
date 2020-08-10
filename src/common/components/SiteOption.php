@@ -2,7 +2,8 @@
 
 namespace bvb\siteoption\common\components;
 
-use \yii\base\Component;
+use Yii;
+use yii\base\Component;
 
 /**
  * SiteOption helps manage SiteOption records site-wide and implements caching
@@ -28,6 +29,6 @@ class SiteOption extends Component
 				->bindValue(':key', $key)
 				->queryScalar();
 		}
-		return $this->_cache[$key]
+		return $this->_cache[$key];
 	}
 }
