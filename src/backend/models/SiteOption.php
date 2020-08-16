@@ -129,18 +129,23 @@ class SiteOption extends \bvb\siteoption\common\models\SiteOption
      */
     static function getModel($key, $config = [], $returnNull = false)
     {
+        // --- Remove behaviors if set because they can't be set by instantiating
+        // --- or configuring and must be attached on the fly
+        $behaviors = ArrayHelper::remove($config, 'behaviors');
+
         $model = self::findOne($key);
         if($model){
             $value = ArrayHelper::remove($config, 'value');
-            $behaviors = ArrayHelper::remove($config, 'behaviors');
             Yii::configure($model, $config);
-            if(!empty($behaviors)){
-                foreach($behaviors as $behaviorName => $behaviorConfig){
-                    $model->attachBehavior($behaviorName, $behaviorConfig);
-                }
-            }
         } else if(!$returnNull){
             $model = new static(ArrayHelper::merge(['key' => $key], $config));
+        }
+
+        
+        if(!empty($behaviors)){
+            foreach($behaviors as $behaviorName => $behaviorConfig){
+                $model->attachBehavior($behaviorName, $behaviorConfig);
+            }
         }
         return $model;
     }
