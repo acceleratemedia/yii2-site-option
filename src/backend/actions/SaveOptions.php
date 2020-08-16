@@ -58,7 +58,7 @@ class SaveOptions extends Action
 	 * Name of the view file to be rendered that displays the option inputs.
 	 * @var string
 	 */
-	public $view;
+	public $view = 'index';
 
     /**
      * Initialize the form used to create the model
@@ -113,6 +113,6 @@ class SaveOptions extends Action
             	}
             }
         }
-    	return $this->controller->render('index', $viewParams);
+    	return $this->controller->render($this->view, $viewParams);
     }
 }
