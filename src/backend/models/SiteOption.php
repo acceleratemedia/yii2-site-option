@@ -120,6 +120,8 @@ class SiteOption extends \bvb\siteoption\common\models\SiteOption
      * If $returnNull is false it will return a new instance of this class initialized
      * with the given key, with the supplied configuration options. This is is useful
      * when using in the context of updating options that may not yet exist in the database.
+     * A `behaviors` key may be added to $config to have and these will be attached after
+     * the model is created using [[Yii::configure()]]
      * @param string $key
      * @param config $array
      * @param boolean $returnNull
@@ -130,9 +132,13 @@ class SiteOption extends \bvb\siteoption\common\models\SiteOption
         $model = self::findOne($key);
         if($model){
             $value = ArrayHelper::remove($config, 'value');
-            \yii::info('before configure: '.print_r($model,true));
+            $behaviors = ArrayHelper::remove($config, 'behaviors');
             Yii::configure($model, $config);
-            \yii::info('after configure: '.print_r($model,true));
+            if(!empty($behaviors)){
+                foreach($behaviors as $behaviorName => $behaviorConfig){
+                    $model->attachBehavior($behaviorName, $behaviorConfig);
+                }
+            }
         } else if(!$returnNull){
             $model = new static(ArrayHelper::merge(['key' => $key], $config));
         }
