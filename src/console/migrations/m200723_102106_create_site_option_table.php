@@ -1,5 +1,7 @@
 <?php
 
+namespace bvb\siteoption\console\migrations;
+
 use yii\db\Migration;
 
 /**
