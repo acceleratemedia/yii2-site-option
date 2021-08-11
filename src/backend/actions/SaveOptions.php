@@ -3,9 +3,7 @@
 namespace bvb\siteoption\backend\actions;
 
 use bvb\siteoption\backend\models\SiteOption;
-use kartik\form\ActiveForm;
 use Yii;
-use yii\base\Action;
 use yii\base\InvalidConfigException;
 use yii\base\UserException;
 use yii\helpers\Html;
@@ -15,7 +13,7 @@ use yii\helpers\Inflector;
  * SaveOptions is best used on pages where one intends to display multiple options
  * related to a module they have developed that require saving.
  */
-class SaveOptions extends Action
+class SaveOptions extends \yii\base\Action
 {
 	/**
 	 * Configuration for options that should be saved by this action.
@@ -71,10 +69,8 @@ class SaveOptions extends Action
         if(empty($this->optionsConfig)){
         	throw new InvalidConfigException('Options must be provided for this action to save in the $optionsConfig property.');
         }
-        Yii::$app->view->form = Yii::createObject(['class' => ActiveForm::class]);
-        Yii::$app->view->toolbar['widgets'] = [
-			Html::submitButton('Save', ['class' => 'btn btn-success'])
-		];
+        Yii::$app->view->form = Yii::createObject(['class' => \yii\widgets\ActiveForm::class]);
+        Yii::$app->view->contentHeaderWidgets['saveButton'] = Html::submitButton('Save', ['class' => 'btn btn-success']);
     }
 
     /**
