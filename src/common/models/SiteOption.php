@@ -96,6 +96,9 @@ class SiteOption extends \yii\db\ActiveRecord
         // --- or configuring and must be attached on the fly
         $behaviors = ArrayHelper::remove($config, 'behaviors');
 
+        // --- Remove the input if it's in the config
+        $input = ArrayHelper::remove($config, 'input');
+
         $model = self::findOne($key);
         if($model){
             $value = ArrayHelper::remove($config, 'value');

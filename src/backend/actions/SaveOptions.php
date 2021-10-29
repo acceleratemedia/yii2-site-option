@@ -80,22 +80,26 @@ class SaveOptions extends \yii\base\Action
      */
     public function run()
     {
-        $viewParams = [];
+        $viewParams = [
+            'optionsConfig' => $this->optionsConfig,
+            'siteOptions' => []
+        ];
         foreach($this->optionsConfig as $optionKey => $optionConfig){
             $optionModel = SiteOption::getModel($optionKey, $optionConfig);
-            $viewParams[Inflector::variablize($optionKey)] = $optionModel;
+            $viewParams['siteOptions'][$optionKey] = $optionModel;
         }
 
         $postParams = Yii::$app->request->post('SiteOption');
         if(!empty($postParams)){
         	$allSaved = true;
-            foreach($postParams as $optionKey => $keyValueArray){
-                $viewParams[$optionKey]->value = $keyValueArray['value'];
-                if(!$viewParams[$optionKey]->save()){
-                	$allSaved = false;
-                    throw new UserException('Unknown error when trying to save option '.$optionKey.'. Please troubleshoot.');
+            foreach($viewParams['siteOptions'] as $optionsKey => $optionModel){
+                $optionModel->value = $postParams[Inflector::variablize($optionsKey)]['value'];
+                if(!$optionModel->save()){
+                    $allSaved = false;
+                    throw new UserException('Unknown error when trying to save option '.$optionsKey.'. Please troubleshoot.');
                 }
             }
+
             if($allSaved){
             	if(!empty($this->savedFlashMessage)){
             		Yii::$app->session->addFlash('success', $this->savedFlashMessage);
