@@ -1,5 +1,5 @@
 {
-    "name": "brianvb/yii2-site-option",
+    "name": "acceleratemedia/yii2-site-option",
     "description": "Site option module implements a table to hold site-wide option keys and values",
     "type": "yii2-extension",
     "require": {
