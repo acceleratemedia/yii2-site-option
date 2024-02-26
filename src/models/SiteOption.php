@@ -1,9 +1,10 @@
 <?php
-
-namespace bvb\siteoption\common\models;
+namespace siteoption\models;
 
 use Yii;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
+use yii\helpers\Inflector;
 
 /**
  * This is the model class for table "site_option".
@@ -70,13 +71,63 @@ class SiteOption extends \yii\db\ActiveRecord
     public $rules = [];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static function tableName()
     {
         return 'site_option';
     }
 
+    /**
+     * Uses [[$rules]] to append additional custom rules per instance for specific
+     * needs in regards to options that a developer may include in their application
+     * {@inheritdoc}
+     */
+    public function rules()
+    {
+        // --- Default rules related to key should not receive user input so these
+        // --- are here to make sure developers follow these rules 
+        $rules = [
+            [['key'], 'string', 'max' => 50],
+            [['key'], 'unique']
+        ];
+
+        if(!empty($this->rules)){
+            foreach($this->rules as $rule){
+                array_unshift($rule, ['value']);
+                $rules[] = $rule;
+            }
+        }
+        return $rules;
+    }
+
+    /**
+     * Uses [[$label]] to return the label
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
+        return [
+            'value' => $this->label,
+            // --- Sets the label properly for the suggested use of SiteOption
+            // --- models when submitting in forms since frequently more than one
+            // --- model is updated on a single page so we set the attribute based
+            // --- on the key
+            '['.Inflector::variablize($this->key).']value' => $this->label,
+        ];
+    }
+
+    /**
+     * Uses [[$hint]] to return the hint
+     * {@inheritdoc}
+     */
+    public function attributeHints()
+    {
+        return [
+            'value' => $this->hint,
+            '['.Inflector::variablize($this->key).']value' => $this->hint,
+        ];
+    }
 
     /**
      * Returns an instance of this class representing the records with the given key
@@ -99,6 +150,9 @@ class SiteOption extends \yii\db\ActiveRecord
         // --- Remove the input if it's in the config
         $input = ArrayHelper::remove($config, 'input');
 
+        // --- Remove asJson if it's in the config
+        $asJson = ArrayHelper::remove($config, 'asJson');
+
         $model = self::findOne($key);
         if($model){
             $value = ArrayHelper::remove($config, 'value');
@@ -113,6 +167,11 @@ class SiteOption extends \yii\db\ActiveRecord
                 $model->attachBehavior($behaviorName, $behaviorConfig);
             }
         }
+
+        if($asJson){
+            $model->value = Json::decode($model->value);
+        }
+
         return $model;
     }
 }

@@ -1,26 +1,20 @@
 {
     "name": "acceleratemedia/yii2-site-option",
-    "description": "Site option module implements a table to hold site-wide option keys and values",
+    "description": "Includes migration for a database table and component for storage and use of key-value site options.",
     "type": "yii2-extension",
     "require": {
+        "acceleratemedia/yii2-utilities": "@dev",
         "yiisoft/yii2": "^2.0"
     },
     "authors": [
         {
-            "name": "BrianVB",
-            "email": "vanburen.brian@gmail.com"
+            "name": "Accelerate Media",
+            "email": "developers@accelm.com"
         }
     ],
-    "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
-            "bvb\\siteoption\\": "src"
+            "siteoption\\": "src"
         }
-    },
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "https://asset-packagist.org"
-        }
-    ]
+    }
 }

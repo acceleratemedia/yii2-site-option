@@ -1,6 +1,5 @@
 <?php
-
-namespace bvb\siteoption\common\helpers;
+namespace bvb\siteoption\helpers;
 
 use yii\helpers\Inflector;
 
@@ -9,6 +8,11 @@ use yii\helpers\Inflector;
  */
 class SiteOption
 {
+    /**
+     * @var string Name to use for the cache component
+     */
+    const CACHE_COMPONENT_NAME = 'siteOptionCache';
+
     /**
      * Returns the name attribute that should be used for meta models taking
      * into consideration many of these same models may be on a page at once
