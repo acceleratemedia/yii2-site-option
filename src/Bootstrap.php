@@ -41,10 +41,11 @@ class Bootstrap implements \yii\base\BootstrapInterface
 
             $events = [
                 \yii\db\ActiveRecord::EVENT_AFTER_INSERT,
-                \yii\db\ActiveRecord::EVENT_AFTER_UPDATE
+                \yii\db\ActiveRecord::EVENT_AFTER_UPDATE,
+                \yii\db\ActiveRecord::EVENT_AFTER_DELETE,
             ];
             foreach($events as $event){            
-                Event::on(\siteoption\models\SiteOption::class, $event, [self::class, 'handleAfterSave']);
+                Event::on(\siteoption\models\SiteOption::class, $event, [self::class, 'deleteCachedValue']);
             }
         }
     }
@@ -53,7 +54,7 @@ class Bootstrap implements \yii\base\BootstrapInterface
      * @param \yii\base\Event $event
      * @return void
      */
-    static function handleAfterSave($event)
+    static function deleteCachedValue($event)
     {
         if(!Yii::$app->has(\siteoption\helpers\SiteOption::DEFAULT_CACHE_COMPONENT_NAME)){
             return;
