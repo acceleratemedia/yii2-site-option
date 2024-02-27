@@ -1,6 +1,8 @@
 <?php
 namespace siteoption;
 
+use Yii;
+use yii\base\Event;
 use yiiutils\Helper;
 
 /**
@@ -22,9 +24,40 @@ class Bootstrap implements \yii\base\BootstrapInterface
         // --- Register an application cache component
         Helper::applyDefaultComponentConfig(
             $app,
-            \siteoption\helpers\SiteOption::CACHE_COMPONENT_NAME,
+            \siteoption\helpers\SiteOption::DEFAULT_COMPONENT_NAME,
             '',
-            $this->cacheConfig
+            ['class' => \siteoption\components\SiteOption::class]
         );
+
+        // --- If a cache config is supplied, create the component
+        // --- and handle clearing the cache when records are saved
+        if(!empty($this->cacheConfig)){
+            Helper::applyDefaultComponentConfig(
+                $app,
+                \siteoption\helpers\SiteOption::DEFAULT_CACHE_COMPONENT_NAME,
+                '',
+                $this->cacheConfig
+            );
+
+            $events = [
+                \yii\db\ActiveRecord::EVENT_AFTER_INSERT,
+                \yii\db\ActiveRecord::EVENT_AFTER_UPDATE
+            ];
+            foreach($events as $event){            
+                Event::on(\siteoption\models\SiteOption::class, $event, [self::class, 'handleAfterSave']);
+            }
+        }
+    }
+
+    /**
+     * @param \yii\base\Event $event
+     * @return void
+     */
+    static function handleAfterSave($event)
+    {
+        if(!Yii::$app->has(\siteoption\helpers\SiteOption::DEFAULT_CACHE_COMPONENT_NAME)){
+            return;
+        }
+        Yii::$app->get(\siteoption\helpers\SiteOption::DEFAULT_CACHE_COMPONENT_NAME)->delete($event->sender->key);
     }
 }

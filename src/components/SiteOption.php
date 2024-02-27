@@ -1,6 +1,6 @@
 <?php
 
-namespace bvb\siteoption\components;
+namespace siteoption\components;
 
 use Yii;
 
@@ -67,7 +67,7 @@ class SiteOption extends \yii\base\Component
     protected function getCache()
     {
         if(empty($this->_cache)){
-            $this->_cache = Yii::$app->get(\bvb\siteoption\helpers\SiteOption::CACHE_COMPONENT_NAME);
+            $this->_cache = Yii::$app->get(\siteoption\helpers\SiteOption::DEFAULT_CACHE_COMPONENT_NAME);
         }
         return $this->_cache;
     }

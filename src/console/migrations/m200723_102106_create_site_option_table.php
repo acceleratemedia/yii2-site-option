@@ -1,13 +1,10 @@
 <?php
-
-namespace bvb\siteoption\console\migrations;
-
-use yii\db\Migration;
+namespace siteoption\console\migrations;
 
 /**
  * Handles the creation of table `site_option`.
  */
-class m200723_102106_create_site_option_table extends Migration
+class m200723_102106_create_site_option_table extends \yii\db\Migration
 {
     /**
      * {@inheritdoc}
